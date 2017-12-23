@@ -62,6 +62,14 @@ if val[:err] then
   exit 1
 else
   url=val[:option][:url]
+  # if do not set --url option
+  if !url then
+    # see environment
+    if ENV['DOCKER_REGISTRY_URL'] then
+      url=ENV['DOCKER_REGISTRY_URL']
+    else
+      url="http://localhost:5000"
+  end
   image=val[:option][:image]
 
   case val[:command]
