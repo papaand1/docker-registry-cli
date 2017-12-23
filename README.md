@@ -2,28 +2,29 @@ docker-registry-cli
 ====
 
 # Overview
-This program is command line tool of docker distribution.
+docker-registry-cli is command line tool of docker distribution.  
+docker-registry-cli provides easy operation from a command line.
 
 ## Usage
-
-install ruby
-
+If you want to use docker-registry-cli right away there are two options:
+##### You have a working [Ruby environment].
 ```
 cd src
 ruby docker-registry-cli.rb <command> [options] 
 ```
-
-or if you installed docker
-
+##### You have a working [Docker environment].
 ```
 ./run.sh <command> [options]
 ```
 
 ## Program commands and options
+This program has following 3 commands.  
+\* If you set DOCKER_REGISTRY_URL in your OS environment variable, you don't have to use --url option.
+
 * getImages  
   This command gets image list from docker distribution.  
   options:  
-    --url=<url> (default: http://localhost:5000)  
+    --url=<url> (default: http://localhost:5000)
 * getTags  
   This command gets tags of docker image  
   options:  
@@ -38,3 +39,9 @@ or if you installed docker
 
 ## TODO
 error handling
+
+## Author
+Shunsuke Miyoshi
+
+## License
+This software is released under the MIT License, see [LICENSE.txt](./LICENSE.txt).
