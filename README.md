@@ -19,20 +19,18 @@ ruby docker-registry-cli.rb <command> [options]
 
 ## Program commands and options
 This program has following 3 commands.  
-\* If you set DOCKER_REGISTRY_URL in your OS environment variable, you don't have to use --url option.
+\* If you set DOCKER_REGISTRY_URL in your OS environment variable, you don't have to use --url option.  
+(Ex. export DOCKER_REGISTRY_URL="http://localhost:5000")
 
-* getImages  
-  This command gets image list from docker distribution.  
-  options:  
+- ```getImages```: This command gets image list from docker distribution.  
+  - options:  
     --url=<url> (default: http://localhost:5000)
-* getTags  
-  This command gets tags of docker image  
-  options:  
+- ```getTags```: This command gets tags of docker image  
+  - options:  
     --url=<url> (default: http://localhost:5000)  
     --image=<image> (\*This value is necessary)  
-* delete  
-  This command delete image  
-  options:  
+- ```delete```: This command delete image  
+  - options:  
     --url=<url> (default: http://localhost:5000)  
     --image=<image> (\*This value is necessary)  
     --tags=<deleting tag list> (delete all tag if you do not set this option)  
