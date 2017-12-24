@@ -5,7 +5,6 @@ IMAGE_DESC="target docker image name"
 TAG_DESC="taget tags of docker image(Ex. --tags='v1.0','v1.3' *target is all tag if you do not set this)"
 
 def OptionParser(args)
-  option = { :url => "http://localhost:5000"}
   scriptName = File.basename($0)
   banner = <<"EOS"
 Usage: ruby #{scriptName} <command> [options]
