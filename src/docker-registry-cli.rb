@@ -69,6 +69,7 @@ else
       url=ENV['DOCKER_REGISTRY_URL']
     else
       url="http://localhost:5000"
+    end
   end
   image=val[:option][:image]
 
