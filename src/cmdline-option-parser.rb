@@ -6,6 +6,7 @@ TAG_DESC="taget tags of docker image(Ex. --tags='v1.0','v1.3' *target is all tag
 
 def OptionParser(args)
   scriptName = File.basename($0)
+  option=Hash.new
   banner = <<"EOS"
 Usage: ruby #{scriptName} <command> [options]
 
