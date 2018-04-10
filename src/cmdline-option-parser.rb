@@ -49,7 +49,12 @@ EOS
     required_args_num = 1
   end
 
-  opts.parse!(args)
+  begin
+    opts.parse!(args)
+  rescue OptionParser::InvalidOption => e
+    return {err: e.to_s}
+  end
+
   if args.length != required_args_num then
     return {err: opts.help}
   else

@@ -66,7 +66,7 @@ def deleteTag(url, image, digest)
 end
 
 # Main Process
-val=OptionParser(ARGV)
+val = OptionParser(ARGV)
 if val[:err] then
   $stderr.puts val[:err]
   exit 1
