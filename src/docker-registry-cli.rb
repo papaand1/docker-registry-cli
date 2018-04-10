@@ -12,25 +12,39 @@ require './cmdline-option-parser'
 # DELETE /v2/<image>/manifests/<digest> deleteImage
 # GET    /v2/_catalog                   getImages
 
+def query(url, request)
+  begin
+    res = Net::HTTP.start(url.host, url.port) do |http|
+      http.request(request)
+    end
+  rescue => e
+    $stderr.puts "ERROR: " + e.to_s
+    exit 
+  end
+  
+  if ! (200 <= res.code.to_i && res.code.to_i < 300) then
+    $stderr.puts "ERROR: failed to request: status code = " + res.code.to_s
+    exit
+  end
+
+  return res
+end
+
 def getAllTag(url, image)
-  u = URI.parse(url+"/v2/"+image+"/tags/list")
+  u = URI.parse(url + "/v2/" + image + "/tags/list")
 
   req = Net::HTTP::Get.new(u.path)
-  res = Net::HTTP.start(u.host, u.port) do |http|
-    http.request(req)
-  end
+  res = query(u, req)
 
   return JSON.parse(res.body)
 end
 
 def getDigest(url, image, tag)
-  u = URI.parse(url+"/v2/"+image+"/manifests/"+tag)
+  u = URI.parse(url + "/v2/" + image + "/manifests/" + tag)
 
   req = Net::HTTP::Get.new(u.path)
-  req["Accept"]="application/vnd.docker.distribution.manifest.v2+json"
-  res = Net::HTTP.start(u.host, u.port) do |http|
-    http.request(req)
-  end
+  req["Accept"] = "application/vnd.docker.distribution.manifest.v2+json"
+  res = query(u, req)
 
   return res.header['Docker-Content-Digest']
 end
@@ -39,9 +53,7 @@ def getAllImage(url)
   u = URI.parse(url+"/v2/_catalog")
 
   req = Net::HTTP::Get.new(u.path)
-  res = Net::HTTP.start(u.host, u.port) do |http|
-    http.request(req)
-  end
+  res = query(u, req)
 
   return JSON.parse(res.body)
 end
@@ -50,9 +62,7 @@ def deleteTag(url, image, digest)
   u = URI.parse(url+"/v2/"+image+"/manifests/"+digest)
 
   req = Net::HTTP::Delete.new(u.path)
-  res = Net::HTTP.start(u.host, u.port) do |http|
-    http.request(req)
-  end
+  query(u, req)
 end
 
 # Main Process
@@ -71,51 +81,44 @@ else
       url="http://localhost:5000"
     end
   end
-  image=val[:option][:image]
 
   case val[:command]
   when "getImages" then
-    images=getAllImage(url)
-    images["repositories"].each do |i|
-      puts i
+    images = getAllImage(url)
+    images["repositories"].each do |img|
+      puts img
     end
   when "getTags" then
-    if !image then
-      $stderr.puts "This command requires --image option"
-      exit 1
-    end
-    tags=getAllTag(url,image)
+    image = val[:args][0]
+    tags = getAllTag(url, image)
     if !tags.has_key?("tags") then
-      $stderr.puts "There is no tags in --image="+image
+      $stderr.puts "There is no tags in image = " + image
       exit 1
     end
-    tags["tags"].each do |t|
-      puts t
+    tags["tags"].each do |tag|
+      puts tag
     end
   when "delete" then
-    if !image then
-      $stderr.puts "This command requires --image option"
-      exit 1
-    end
-    tags=Array.new
+    image = val[:args][0]
+    tags = Array.new
     if val[:option][:tags] then
-      tags=val[:option][:tags]
+      tags = val[:option][:tags]
     else
-      ts=getAllTag(url,image)
+      ts = getAllTag(url, image)
       if !ts.has_key?("tags") then
-        $stderr.puts "There is no tags in --image="+image
+        $stderr.puts "There is no tags in image = " + image
         exit 1
       else
-        tags=ts["tags"]
+        tags = ts["tags"]
       end
     end
     tags.each do |tag|
-      digest=getDigest(url,image,tag)
+      digest = getDigest(url, image, tag)
       if !digest then
         $stderr.puts image+"has no such tag ("+tag+")"
         exit 1
       end
-      deleteTag(url,image,digest)
+      deleteTag(url, image, digest)
     end
   end
 end
