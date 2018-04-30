@@ -30,11 +30,11 @@ class TestCmdOption < Test::Unit::TestCase
     assert(args, true) 
 
     # use --url option and image name
-    args = ["getImages", "test-image", "--url=http://example.com"]
+    args = ["getTags", "test-image", "--url=http://example.com"]
     assert(args, false)
 
     # change order
-    args = ["getImages", "--url=http://example.com", "test-image"]
+    args = ["getTags", "--url=http://example.com", "test-image"]
     assert(args, false)
   end
 
