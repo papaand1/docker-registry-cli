@@ -66,59 +66,61 @@ def deleteTag(url, image, digest)
 end
 
 # Main Process
-val = OptionParser(ARGV)
-if val[:err]
-  $stderr.puts val[:err]
-  exit 1
-else
-  url = val[:option][:url]
-  # if do not set --url option
-  if !url
-    # see environment
-    if ENV["DOCKER_REGISTRY_URL"]
-      url = ENV["DOCKER_REGISTRY_URL"]
-    else
-      url = "http://localhost:5000"
+if __FILE__ == $0 then
+  val = OptionParser(ARGV)
+  if val[:err]
+    $stderr.puts val[:err]
+    exit 1
+  else
+    url = val[:option][:url]
+    # if do not set --url option
+    if !url
+      # see environment
+      if ENV["DOCKER_REGISTRY_URL"]
+        url = ENV["DOCKER_REGISTRY_URL"]
+      else
+        url = "http://localhost:5000"
+      end
     end
-  end
 
-  case val[:command]
-  when "getImages"
-    images = getAllImage(url)
-    images["repositories"].each do |img|
-      puts img
-    end
-  when "getTags"
-    image = val[:args][0]
-    tags = getAllTag(url, image)
-    if !tags.has_key?("tags")
-      $stderr.puts "There is no tags in image = " + image
-      exit 1
-    end
-    tags["tags"].each do |tag|
-      puts tag
-    end
-  when "delete"
-    image = val[:args][0]
-    tags = Array.new
-    if val[:option][:tags]
-      tags = val[:option][:tags]
-    else
-      ts = getAllTag(url, image)
-      if !ts.has_key?("tags")
+    case val[:command]
+    when "getImages"
+      images = getAllImage(url)
+      images["repositories"].each do |img|
+        puts img
+      end
+    when "getTags"
+      image = val[:args][0]
+      tags = getAllTag(url, image)
+      if !tags.has_key?("tags")
         $stderr.puts "There is no tags in image = " + image
         exit 1
+      end
+      tags["tags"].each do |tag|
+        puts tag
+      end
+    when "delete"
+      image = val[:args][0]
+      tags = Array.new
+      if val[:option][:tags]
+        tags = val[:option][:tags]
       else
-        tags = ts["tags"]
+        ts = getAllTag(url, image)
+        if !ts.has_key?("tags")
+          $stderr.puts "There is no tags in image = " + image
+          exit 1
+        else
+          tags = ts["tags"]
+        end
       end
-    end
-    tags.each do |tag|
-      digest = getDigest(url, image, tag)
-      if !digest
-        $stderr.puts image + "has no such tag (" + tag + ")"
-        exit 1
+      tags.each do |tag|
+        digest = getDigest(url, image, tag)
+        if !digest
+          $stderr.puts image + "has no such tag (" + tag + ")"
+          exit 1
+        end
+        deleteTag(url, image, digest)
       end
-      deleteTag(url, image, digest)
     end
   end
 end
