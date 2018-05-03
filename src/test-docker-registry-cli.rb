@@ -13,8 +13,9 @@ class TestDockerRegistryCLI < Test::Unit::TestCase
 			headers: { 'Content-Type' =>  'application/json' }
 		)
 
-		res = getAllImage(URL)
-		assert_equal(res["repositories"],["image1","image2"])
+		cli = DockerResitryCLI.new(URL)
+		res = cli.getAllImage()
+		assert_equal(res,["image1","image2"])
 	end
 
 	def test_getAllTag
@@ -23,19 +24,29 @@ class TestDockerRegistryCLI < Test::Unit::TestCase
 			status: 200,
 			headers: { 'Content-Type' =>  'application/json' }
     )
-    
-    res = getAllTag(URL,"image1")
-    assert_equal(res["tags"],["v1","v2"])
+		
+		cli = DockerResitryCLI.new(URL)
+    res = cli.getAllTag("image1")
+    assert_equal(res,["v1","v2"])
 	end
 
-  def test_deleteTag
+	def test_deleteTag
+		WebMock.stub_request(:get, URL + "/v2/image1/manifests/v1").to_return(
+			status: 200,
+			headers: {
+				'Content-Type' =>  'application/vnd.docker.distribution.manifest.v1',
+				'Docker-Content-Digest' => 'digest1'
+			}
+    )
+
     WebMock.stub_request(:delete, URL + "/v2/image1/manifests/digest1").to_return(
 			status: 200,
 			headers: { 'Content-Type' =>  'application/json' }
     )
-    
-    assert_nothing_raised RuntimeError do
-      deleteTag(URL,"image1","digest1")
+		
+		cli = DockerResitryCLI.new(URL)
+		assert_nothing_raised RuntimeError do
+      cli.delete("image1",["v1"])
     end    
   end
 end
