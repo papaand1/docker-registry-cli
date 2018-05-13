@@ -10,13 +10,13 @@ Please see samples in Program commands and options section.
 If you want to use docker-registry-cli right away there are two options:
 ##### You have a working [Ruby environment].
 ```
-cd src
-ruby docker-registry-cli.rb <command> [options] 
+sudo make install
+docker-registry-cli.rb <command> [options]
 ```
 ##### You have a working [Docker environment].
 ```
 docker pull smiyoshi/docker-registry-cli  
-docker run -it --rm smiyoshi/docker-registry-cli ruby docker-registry-cli.rb <command> [options]  
+docker run -it --rm smiyoshi/docker-registry-cli docker-registry-cli <command> [options]  
 ```
 
 ## Program commands and options
@@ -29,7 +29,7 @@ This program has following 3 commands.
     --url=\<url\> (default: http://localhost:5000)
   - sample:
 ```
-$ ruby docker-registry-cli.rb getImages --url="http://192.168.0.1:5000"
+$ docker-registry-cli getImages --url="http://192.168.0.1:5000"
 sample
 myruby
 ```
@@ -38,7 +38,7 @@ myruby
     --url=\<url\> (default: http://localhost:5000)  
   - sample:
 ```
-$ ruby docker-registry-cli.rb getTags sample --url="http://192.168.0.1:5000"
+$ docker-registry-cli getTags sample --url="http://192.168.0.1:5000"
 v1.0
 v2.0
 ```
@@ -48,7 +48,7 @@ v2.0
     --tags=\<deleting tag list\> (delete all tag if you do not set this option)
   - sample:
 ```
-$ ruby docker-registry-cli.rb delete sample --url="http://192.168.0.1:5000"
+$ docker-registry-cli delete sample --url="http://192.168.0.1:5000"
 ```
 
 ## TODO

@@ -3,7 +3,7 @@
 require "net/http"
 require "uri"
 require "json"
-require "./cmdline-option-parser"
+require __dir__ + "/cmdline-option-parser"
 
 # APIs
 # https://github.com/docker/distribution/blob/master/docs/spec/api.md
