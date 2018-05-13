@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "optparse"
 
 URL_DESC = "target URL of docker distribution(default: http://localhost:5000)"
