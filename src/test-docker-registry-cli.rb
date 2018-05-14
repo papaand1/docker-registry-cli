@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'webmock'
 require 'test/unit'
 require './docker-registry-cli'

@@ -1,6 +1,8 @@
+#!/usr/bin/env ruby
+
 require "optparse"
 
-URL_DESC = "target URL of docker distribution(default: http://localhost:5000)"
+URL_DESC = "target URL of docker registry(default: http://localhost:5000)"
 IMAGE_DESC = "target docker image name"
 TAG_DESC = "taget tags of docker image(Ex. --tags='v1.0','v1.3' *target is all tag if you do not set this)"
 
@@ -9,7 +11,7 @@ def OptionParser(args)
 Usage: ruby #{File.basename($0)} <command> [options]
 
 Command:
-  getImages: get image of docker distribution
+  getImages: get image of docker registry
   getTags:   get tags of docker image
   delete:    delete tag of image
 
