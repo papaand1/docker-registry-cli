@@ -11,7 +11,7 @@ If you want to use docker-registry-cli right away there are two options:
 ##### You have a working [Ruby environment].
 ```
 sudo make install
-docker-registry-cli.rb <command> [options]
+docker-registry-cli <command> [options]
 ```
 ##### You have a working [Docker environment].
 ```
