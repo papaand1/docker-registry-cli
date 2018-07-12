@@ -58,4 +58,4 @@ error handling
 Shunsuke Miyoshi
 
 ## License
-This software is released under the MIT License, see [LICENSE.txt](./LICENSE.txt).
+This software is released under the MIT License, see [LICENSE](./LICENSE).
