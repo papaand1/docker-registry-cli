@@ -15,7 +15,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            bundle install --jobs=4 --retry=3 --path bundle
+            bundle install --jobs=4 --retry=3
             cd src
             ruby test-cmdline-option-parser.rb
             ruby test-docker-registry-cli.rb
